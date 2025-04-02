@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Test: ¿Qué canción de Milo J te recomiendo?</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+body {
+    position: relative;
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('https://i.pinimg.com/736x/af/29/73/af2973e0b25e655e08126fe5ccb4391f.jpg') no-repeat center center/cover;
+    opacity: 0.5; /* Ajusta la transparencia */
+    z-index: -1;
+}
+
+        .container { 
+            max-width: 600px; 
+            margin-top: 50px; 
+            background: rgba(57, 65, 59, 0.9); 
+            padding: 20px; 
+            border-radius: 10px;
+        }
+        .hidden { display: none; }
+        .btn-youtube {
+            background-color: red;
+            color: white;
+            width: 100%;
+        }
+        .btn-restart {
+            background-color: white;
+            color: black;
+            border-radius: 5px;
+            display: block;
+            width: 100%;
+            margin-top: 15px;
+            padding: 10px;
+            font-weight: bold;
+            text-align: center;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container text-center">
+    <h2>🎶 Test: ¿Qué escuchar según cómo me siento? 🎵</h2>
+    
+    <div id="question-container">
+        <p id="question-text" class="fw-bold"></p>
+        <div id="options" class="d-grid gap-2"></div>
+    </div>
+
+    <div id="result-container" class="hidden">
+        <h4>Tu canción recomendada es:</h4>
+        <p id="song-recommendation" class="fw-bold"></p>
+        <a id="song-link" class="btn btn-youtube" target="_blank">🎧 Escuchar en YouTube</a>
+        <a href="#" class="btn-restart" onclick="restartTest()">🔄 Volver a empezar</a>
+    </div>
+</div>
+
+<script>
+const questions = [
+    { 
+        text: "¿Cómo te sientes hoy?", 
+        options: ["Feliz 😀", "Triste 😢", "Enojado 😡", "Relajado 😌"],
+        values: ["happy", "sad", "angry", "calm"]
+    },
+    { 
+        text: "¿Cuál es tu color favorito?", 
+        options: ["Rojo 🔴", "Azul 🔵", "Negro ⚫", "Verde 🟢"],
+        values: ["", "", "", ""]
+    },
+    { 
+        text: "¿Qué materia te gusta más?", 
+        options: ["Matemáticas ➗", "Historia 📖", "Arte 🎨", "Deportes ⚽"],
+        values: ["", "", "", ""]
+    },
+    { 
+        text: "¿Qué buscas en una canción?", 
+        options: ["Motivación 💪", "Conexión emocional 💖", "Desahogo 😤", "Relajación 🧘"],
+        values: ["motivation", "emotional", "vent", "relax"]
+    }
+];
+
+const recommendations = {
+happy___motivation: ["Rara vez - Milo J - Prod. Taiu","https://www.youtube.com/watch?v=aBSkvI0CkgU&ab_channel=TaiuVEVO"],
+happy___emotional: ["Fruto - Milo J & BZRP","https://www.youtube.com/watch?v=hiiUjI3ajbc&ab_channel=Cosasdem%C3%BAsicarandom"],
+happy___vent: ["Soda Stereo - De Música Ligera","https://www.youtube.com/watch?v=VwTQ6Mt2kt4&ab_channel=7cloudsRock"],
+happy___relax: ["Ca7riel & Paco Amoroso: Tiny Desk Concert","https://www.youtube.com/watch?v=9kqnsoY94L8&ab_channel=NPRMusic"],
+sad___motivation: ["WOS - ARRANCARMELO","https://www.youtube.com/watch?v=RNLsc_DWDUw&ab_channel=WOSDS3"],
+sad___emotional: ["Seminare - Charly García","https://www.youtube.com/watch?v=z6uZpam-3Pg&ab_channel=BarbieSuarez"],
+sad___vent: ["Rincón - Milo J","https://www.youtube.com/watch?v=Qip3xXCTzh4&list=RDEMkN1cddME2oyGR_YmY6mKlw&index=2&ab_channel=MILOJ"],
+angry___motivation: ["Trueno: Tiny Desk (Home) Concert","https://www.youtube.com/watch?v=2C-WmZQABLQ&ab_channel=NPRMusic"],
+angry___emotional: ["CARENCIAS DE CORDURA - Milo J ft. Yami Safdie","https://www.youtube.com/watch?v=hfABkoRgNRg&list=RDEMkN1cddME2oyGR_YmY6mKlw&index=6&ab_channel=MILOJ"],
+angry___vent: ["DISPARA *** - Milo J & Nicki Nicole","https://www.youtube.com/watch?v=XsSpBZXW538&ab_channel=nickinicoleVEVO"],
+angry___relax: ["No soy eterno - Milo J & BZRP","https://www.youtube.com/watch?v=3-reCGjm7R8&list=RDEMkN1cddME2oyGR_YmY6mKlw&index=11&ab_channel=Bizarrap-Topic"],
+calm___motivation: ["Here Comes The Sun - The Beatles","https://www.youtube.com/watch?v=1K6xyB2-xAk&ab_channel=Sunflower"],
+calm___emotional: ["DUKI, Myke Towers - Nueva Era","https://www.youtube.com/watch?v=wgvqiH7iCRo&ab_channel=Duki"],
+calm___vent: ["ALUMBRE - Milo J ft. Nicki Nicole ","https://www.youtube.com/watch?v=dtm0NnpTISQ&list=RDEMkN1cddME2oyGR_YmY6mKlw&index=8&ab_channel=MILOJ"],
+calm___relax: ["Carta de Despedida - LIT killah, Milo J, Ronny J","https://www.youtube.com/watch?v=2gyxXtOpWlA&list=RDEMkN1cddME2oyGR_YmY6mKlw&index=16&ab_channel=LITkillah"],
+
+};
+
+let currentQuestion = 0;
+let userAnswers = [];
+
+function showQuestion() {
+    if (currentQuestion < questions.length) {
+        document.getElementById("question-text").innerText = questions[currentQuestion].text;
+        let optionsHTML = "";
+        questions[currentQuestion].options.forEach((option, index) => {
+            optionsHTML += `<button class="btn btn-outline-light" onclick="selectOption(${index})">${option}</button>`;
+        });
+        document.getElementById("options").innerHTML = optionsHTML;
+    } else {
+        showResult();
+    }
+}
+
+function selectOption(index) {
+    userAnswers.push(questions[currentQuestion].values[index]);
+    currentQuestion++;
+    showQuestion();
+}
+
+function showResult() {
+    document.getElementById("question-container").classList.add("hidden");
+    document.getElementById("result-container").classList.remove("hidden");
+
+    let key = userAnswers.join("_");  // Combinación clave
+
+console.log(key);
+    let result = recommendations[key] || ["Dom1ngo - Milo J", "https://www.youtube.com/watch?v=WM8Scz4u4eQ&ab_channel=Miloj-Topic"];
+console.log(result);
+    document.getElementById("song-recommendation").innerText = result[0];
+    document.getElementById("song-link").href = result[1];
+}
+
+function restartTest() {
+    currentQuestion = 0;
+    userAnswers = [];
+    document.getElementById("result-container").classList.add("hidden");
+    document.getElementById("question-container").classList.remove("hidden");
+    showQuestion();
+}
+
+// Iniciar el test
+showQuestion();
+</script>
+
+</body>
+</html>
