@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Test: ¿Qué canción de Milo J te recomiendo?</title>
+    <title>Test: ¿Qué canción te recomiendo?</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
 body {
@@ -11,6 +11,10 @@ body {
     color: white;
     margin: 0;
     padding: 0;
+}
+
+h2{
+    align-content: center;
 }
 
 body::before {
@@ -53,9 +57,12 @@ body::before {
     </style>
 </head>
 <body>
+<div class="container">
 
+    <h2>🎶 ¿Qué escuchar según cómo me siento? 🎵</h2>
+</div>
+    
 <div class="container text-center">
-    <h2>🎶 Test: ¿Qué escuchar según cómo me siento? 🎵</h2>
     
     <div id="question-container">
         <p id="question-text" class="fw-bold"></p>
@@ -73,7 +80,7 @@ body::before {
 <script>
 const questions = [
     { 
-        text: "¿Cómo te sientes hoy?", 
+        text: "¿Cómo te sentis hoy?", 
         options: ["Feliz 😀", "Triste 😢", "Enojado 😡", "Relajado 😌"],
         values: ["happy", "sad", "angry", "calm"]
     },
